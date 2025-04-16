@@ -1,0 +1,7 @@
+Start deployment: 
+
+2. In "main-score.py", Line 7, copy the path and paste to the terminal. Make sure the path is correct with your directory. 
+
+3. Upload the video as input.
+
+
