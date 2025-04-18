@@ -5,6 +5,7 @@ import whisper
 import json 
 import torch
 import moviepy as mp
+from moviepy.editor import VideoFileClip 
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 from transformers import pipeline
 from langdetect import detect
@@ -19,24 +20,20 @@ import numpy as np
 from transformers import AutoConfig, AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
+import nltk
+nltk.download('punkt_tab')
 
 # Function to convert video to audio
 def convert_video_to_audio(video_file, output_audio_name="output_audio.wav"):
     try:
-        # Save the video file to a temporary location
         temp_video_path = "temp_video.mp4"
         with open(temp_video_path, "wb") as f:
             f.write(video_file.read())
 
-        # Use moviepy to extract audio
-        video = mp.VideoFileClip(temp_video_path)
+        video = VideoFileClip(temp_video_path)  # ✅ updated call
         audio = video.audio
         audio.write_audiofile(output_audio_name)
-
-        # Close the video file and release resources
         video.close()
-
-        # Cleanup: Remove the temporary video file after audio extraction
         os.remove(temp_video_path)
 
         return output_audio_name

@@ -15,9 +15,6 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from preprocess_function import extract_audio, preprocess_audio, predict_emotion, fluent_feature_extraction, get_emotion_interview_score, predict_fluency_level
 
-
-
-
 # Streamlit app
 st.title("AI Interview - Speech Emotion Recognition Dashboard")
 

@@ -235,9 +235,9 @@ def predict_personality(features,scaler):
     features_rnn = features_scaled.reshape(features_scaled.shape[0], 1, features_scaled.shape[1])
 
     # Load the trained models
-    rnn_model = tf.keras.models.load_model('personality_model2/personality_rnn_model.h5', custom_objects={'mse': tf.keras.losses.MeanSquaredError()})
-    xgb_model = joblib.load('personality_model2/xgboost_personality_models.joblib')
-    rf_model = joblib.load('personality_model2/random_forest_personality_model.joblib')
+    rnn_model = tf.keras.models.load_model('tone_analysis_dashboard/personality_model2/personality_rnn_model.h5', custom_objects={'mse': tf.keras.losses.MeanSquaredError()})
+    xgb_model = joblib.load('tone_analysis_dashboard/personality_model2/xgboost_personality_models.joblib')
+    rf_model = joblib.load('tone_analysis_dashboard/personality_model2/random_forest_personality_model.joblib')
 
     # Predict personality traits using the models
     rnn_prediction = rnn_model.predict(features_rnn)
@@ -257,10 +257,10 @@ def predict_emotion(features,scaler,le):
     features_rnn = features.reshape(features.shape[0], 1, features.shape[1])
 
     # Load the trained models
-    rnn_model = tf.keras.models.load_model('emotion_model/emotion_rnn_model.h5')
-    xgb_model = joblib.load('emotion_model/emotion_xgboost_model.joblib')
-    rf_model = joblib.load('emotion_model/emotion_rf_model.joblib')
-    svm_model = joblib.load('emotion_model/emotion_svm_model.joblib')
+    rnn_model = tf.keras.models.load_model('tone_analysis_dashboard/emotion_model/emotion_rnn_model.h5')
+    xgb_model = joblib.load('tone_analysis_dashboard/emotion_model/emotion_xgboost_model.joblib')
+    rf_model = joblib.load('tone_analysis_dashboard/emotion_model/emotion_rf_model.joblib')
+    svm_model = joblib.load('tone_analysis_dashboard/emotion_model/emotion_svm_model.joblib')
 
     # Predict emotion traits using the models
     rnn_prediction = rnn_model.predict(features_rnn)
@@ -305,7 +305,7 @@ def fluent_feature_extraction(file_name):
 
 def predict_fluency_level(features):
 
-    svm_model = joblib.load('fluency_model/fluency_svm_model.pkl')
+    svm_model = joblib.load('tone_analysis_dashboard/fluency_model/fluency_svm_model.pkl')
     svm_prediction = svm_model.predict(features)
 
     return svm_prediction
@@ -332,9 +332,9 @@ def get_emotion_interview_score(emotion_results,fluent_results):
 def get_personality_interview_score(personality_results):
 
     # Load the model from the file
-    model = joblib.load('personality_interview_model/linear_regression_model.pkl')
-    scaler = joblib.load('personality_interview_model/scaler.pkl')
-    pca = joblib.load('personality_interview_model/pca_model.pkl')
+    model = joblib.load('tone_analysis_dashboard/personality_interview_model/linear_regression_model.pkl')
+    scaler = joblib.load('tone_analysis_dashboard/personality_interview_model/scaler.pkl')
+    pca = joblib.load('tone_analysis_dashboard/personality_interview_model/pca_model.pkl')
 
     # Reshape personality_results to be 2D
     personality_results = np.array(personality_results).reshape(1, -1)
