@@ -1,0 +1,33 @@
+st.header("🗣️ Text-Based Emotion & Stress Analysis")
+        audio_file = convert_video_to_audio(uploaded_file)
+        transcript = transcribe_audio(audio_file)
+        text = transcript["text"]
+        lang = transcript["language"]
+
+        st.write("Detected Language:", langcodes.get(lang).display_name())
+        st.write("Transcript:", text)
+
+        if lang != "id":
+            text = translate_to_indonesian(text)
+
+        preprocessed = preprocess_text(text)
+        model, tokenizer, encoder = load_model_and_resources()
+        stress = predict_stress(preprocessed, model, tokenizer, encoder)
+        emotion = predict_text_emotion(preprocessed)
+
+        NEG = ['anger', 'fear', 'sadness']
+        POS = ['happy', 'love']
+        if stress == 1 and emotion in NEG:
+            text_score = 1
+        elif stress == 1:
+            text_score = 3
+        elif stress == 0 and emotion in NEG:
+            text_score = 2
+        elif stress == 0:
+            text_score = 4
+        else:
+            text_score = 0
+
+        st.write(f"Stress Detected: {'Yes' if stress else 'No'}")
+        st.write(f"Emotion Detected: {emotion}")
+        st.success(f"Combined Stress + Emotion Score: {text_score} / 4")

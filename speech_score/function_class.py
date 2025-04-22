@@ -24,23 +24,24 @@ import nltk
 nltk.download('punkt_tab')
 
 # Function to convert video to audio
-def convert_video_to_audio(video_file, output_audio_name="output_audio.wav"):
-    try:
-        temp_video_path = "temp_video.mp4"
-        with open(temp_video_path, "wb") as f:
-            f.write(video_file.read())
+def convert_video_to_audio(video_input):
+    import moviepy.editor as mp
+    import tempfile
 
-        video = VideoFileClip(temp_video_path)  # ✅ updated call
-        audio = video.audio
-        audio.write_audiofile(output_audio_name)
-        video.close()
-        os.remove(temp_video_path)
+    if isinstance(video_input, str):
+        video = mp.VideoFileClip(video_input)
+    else:
+        # Save file-like object to temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp4') as temp_video:
+            temp_video.write(video_input.read())
+            temp_video.flush()
+            video = mp.VideoFileClip(temp_video.name)
 
-        return output_audio_name
+    audio = video.audio
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as temp_audio:
+        audio.write_audiofile(temp_audio.name)
+        return temp_audio.name
 
-    except Exception as e:
-        st.error(f"Error occurred during audio extraction: {str(e)}")
-        return None
 
 # Whisper transcription
 def transcribe_audio(audio_path):
@@ -85,38 +86,6 @@ def preprocess_text(text):
 
     return " ".join(tokens)
 
-# # Remove Indonesian stopwords
-# def remove_stopwords(text, stopwords_path="C:/Users/Admin/OneDrive/Desktop/speech-score/stopwords-id.json"):
-#     with open(stopwords_path, "r") as f:
-#         stopwords = json.load(f)
-#     words = text.split()
-#     filtered_words = [word for word in words if word not in stopwords]
-#     return ' '.join(filtered_words)
-
-# # Convert Indonesian slang words
-# def convert_slang(text, slang_path="C:/Users/Admin/OneDrive/Desktop/speech-score/combined_slang_words.txt"):
-#     # Load the JSON file
-#     with open(slang_path, "r", encoding="utf-8") as f:
-#         slang_dict = json.load(f)  # Load as a dictionary
-
-#     # Replace words in the text based on the slang dictionary
-#     words = text.split()
-#     converted_words = [slang_dict.get(word, word) for word in words]
-#     return ' '.join(converted_words)
-
-# def stem_text(text):
-#     # Create the stemmer
-#     stem_factory = StemmerFactory()
-#     stemmer = stem_factory.create_stemmer()
-
-#     # Tokenize the text (split into words)
-#     tokens = text.split()
-    
-#     # Apply stemming to the tokens
-#     stemmed_tokens = [stemmer.stem(token) for token in tokens]
-    
-#     # Return the stemmed text (joined back into a string)
-#     return ' '.join(stemmed_tokens)
 
 # Translate text to Indonesian
 def translate_to_indonesian(sentence):
