@@ -1,2 +1,2 @@
 # Interview-AI-API
-Interview AI API for Interview Web Portal
+Interview AI Analysis API for Interview Web Portal
