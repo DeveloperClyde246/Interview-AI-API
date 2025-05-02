@@ -1,6 +1,0 @@
-now i want to make the python code as api, so when submit the interview videos, the backend send video/video link to api then do analysis, then return the analysis details (including datas that are used to show all those graphs) and final score, then these will be stored to database
-
-
-
-
-//------this is backend code
